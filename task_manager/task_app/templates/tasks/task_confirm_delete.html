@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Task</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow p-4 text-center">
+            <h2 class="text-danger mb-3">Delete Task</h2>
+            <p>Are you sure you want to delete the task: <strong>{{ task.title }}</strong>?</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                <a href="{% url 'task_list' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task List</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">To-Do List</h2>
+
+        <div class="text-end mb-3">
+            <a href="{% url 'task_create' %}" class="btn btn-primary">Add New Task</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow bg-white rounded">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Assigned Personnel</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.description }}</td>
+                        <td>{{ task.assigned_personnel }}</td>
+                        <td>{{ task.due_date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if task.status == "Overdue" %}
+                                <span class="badge bg-danger">{{ task.status }}</span>
+                            {% elif task.status == "Due Today" %}
+                                <span class="badge bg-warning text-dark">{{ task.status }}</span>
+                            {% elif task.status == "Upcoming" %}
+                                <span class="badge bg-success">{{ task.status }}</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Completed</span>
+                            {% endif %}
+                        </td>
+                        <td class="d-flex justify-content-between ">
+                            {% if task.status != "Complete" %}
+                            <a href="{% url 'task_complete' task.id %}" class="btn btn-sm btn-success"> Complete </a>
+                            {% endif %}
+                            <a href="{% url 'task_delete' task.id %}" class="btn btn-sm btn-danger"> Delete </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No tasks available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="{% static 'bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
